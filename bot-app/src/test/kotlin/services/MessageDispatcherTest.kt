@@ -1,15 +1,19 @@
 package wombatukun.bots.wombatubot.services
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
+import org.telegram.telegrambots.meta.api.objects.Update
 import wombatukun.api.currency.CurrencyApi
 import wombatukun.bots.wombatubot.MockingUtils
 
 class MessageDispatcherTest: MockingUtils() {
 
-	private val messageDispatcher = MessageDispatcherImpl(Mockito.mock(CurrencyApi::class.java))
+	private val userService = Mockito.mock(UserService::class.java)
+	private val messageDispatcher = MessageDispatcherImpl(userService, Mockito.mock(CurrencyApi::class.java))
 
 	private val MAN: String = """
 		Текущий курс: руб
@@ -23,15 +27,19 @@ class MessageDispatcherTest: MockingUtils() {
 
 	@Test
 	fun testDispatchStart() {
-		val response: SendMessage? = messageDispatcher.dispatch(buildMockUpdate("/start", ChatType.private))
+		val update: Update = buildMockUpdate("/start", ChatType.private)
+		val response: SendMessage? = messageDispatcher.dispatch(update)
 		assertEquals(MAN, response?.text)
 		assertEquals(CHAT_ID.toString(), response?.chatId)
+		verify(userService, times(1)).upsertUser(update.message.from)
 	}
 
 	@Test
 	fun testDispatchMan() {
-		val response: SendMessage? = messageDispatcher.dispatch(buildMockUpdate("ман", ChatType.private))
+		val update: Update = buildMockUpdate("ман", ChatType.private)
+		val response: SendMessage? = messageDispatcher.dispatch(update)
 		assertEquals(MAN, response?.text)
 		assertEquals(CHAT_ID.toString(), response?.chatId)
+		verify(userService, times(1)).upsertUser(update.message.from)
 	}
 }

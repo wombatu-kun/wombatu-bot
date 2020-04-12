@@ -11,7 +11,7 @@ plugins {
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
-	implementation(project(":bot-dao"))
+	compile(project(":bot-dao"))
 	implementation(project(":bot-currency-api"))
 	implementation("org.telegram:telegrambots-spring-boot-starter:4.7")
 	implementation("org.springframework.boot:spring-boot-starter-web")
