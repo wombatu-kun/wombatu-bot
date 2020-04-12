@@ -1,3 +1,31 @@
+spring:
+  application:
+    name: 'wombatu-bot'
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: 'org.hibernate.dialect.PostgreSQLDialect'
+        jdbc.lob.non_contextual_creation: true
+    hibernate.ddl-auto: none
+    show-sql: false
+
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/wombatubot'
+    username: postgres
+    password: password
+    hikari:
+      connectionTimeout: 20000
+      maximum-pool-size: 60
+    continue-on-error: false
+
+  liquibase:
+    change-log: classpath:db/db.changelog-master.xml
+
+  jackson:
+    default-property-inclusion: non_null
+
+
 logging:
   file: bot.log
   level:

@@ -6,27 +6,42 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.9.RELEASE"
 	kotlin("jvm") version "1.3.71"
 	kotlin("plugin.spring") version "1.3.71"
-	kotlin("kapt") version "1.3.71"
+	kotlin("plugin.jpa") version "1.3.71"
+	kotlin("plugin.allopen") version "1.3.71"
+}
+
+allOpen {
+	annotation("javax.persistence.Entity")
+	annotation("javax.persistence.Embeddable")
+	annotation("javax.persistence.MappedSuperclass")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
-	implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix:2.1.2.RELEASE")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	kapt("org.springframework.boot:spring-boot-configuration-processor")
-	implementation("org.apache.httpcomponents:httpclient:4.5.9")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	runtimeOnly("org.postgresql:postgresql")
+	implementation("org.liquibase:liquibase-core")
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(module = "junit")
+	}
+	testImplementation("org.junit.jupiter:junit-jupiter-api")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+	testImplementation("com.h2database:h2")
 }
+
 
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
 		jvmTarget = "1.8"
 	}
+}
+
+tasks.withType<Test> {
+	useJUnitPlatform()
 }
 
 val jar: Jar by tasks

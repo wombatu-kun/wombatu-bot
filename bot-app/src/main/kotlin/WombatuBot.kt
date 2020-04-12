@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException
 import wombatukun.bots.wombatubot.services.MessageDispatcher
+import javax.annotation.PostConstruct
 
 @SpringBootApplication
 @EnableConfigurationProperties
@@ -25,6 +26,11 @@ class WombatuBot(
 
 	private lateinit var botUsername: String
 	private lateinit var botToken: String
+
+	@PostConstruct
+	fun postConstruct() {
+		log.info("BOT: {}", botUsername)
+	}
 
 	override fun onUpdateReceived(update: Update?) {
 		if (update == null || update.message == null || update.message.from == null || update.message.from.bot) {

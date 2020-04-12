@@ -11,8 +11,9 @@ plugins {
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
-	compile(project(":bot-currency-api"))
-	compile("org.telegram:telegrambots-spring-boot-starter:4.7")
+	implementation(project(":bot-dao"))
+	implementation(project(":bot-currency-api"))
+	implementation("org.telegram:telegrambots-spring-boot-starter:4.7")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -21,7 +22,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
-	testCompile("com.h2database:h2")
+	testImplementation("com.h2database:h2")
 }
 
 tasks.withType<KotlinCompile> {
