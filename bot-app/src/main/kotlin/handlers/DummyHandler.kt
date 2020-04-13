@@ -20,7 +20,7 @@ class DummyHandler: MessageHandler {
 		val text = when {
 			msg.startsWith("кто ты",true) -> "я есть вомбату-куна вомбату-бот!"
 			msg.startsWith("кто я", true) -> "ты есть то, что обозначается как @${sender.userName}"
-			else -> "ты сказал: ${msg}"
+			else -> "so, you say: ${msg}"
 		}
 		return buildSimpleResponse(update.message.chatId, text)
 	}

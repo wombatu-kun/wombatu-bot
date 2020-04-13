@@ -7,5 +7,6 @@ interface UserService {
 
 	suspend fun upsertUser(from: org.telegram.telegrambots.meta.api.objects.User)
 	fun listUsers(): List<User>
+	fun findById(id: Long): User
 
 }

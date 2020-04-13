@@ -29,4 +29,9 @@ class UserServiceImpl(
 	override fun listUsers(): List<User> {
 		return userRepository.findAll()
 	}
+
+	@Transactional(readOnly = true)
+	override fun findById(id: Long): User {
+		return userRepository.findById(id).get()
+	}
 }

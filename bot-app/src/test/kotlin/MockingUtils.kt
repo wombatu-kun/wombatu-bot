@@ -12,7 +12,7 @@ open class MockingUtils {
 	enum class ChatType { private, group, channel, supergroup }
 
 	val USER: User = User(1, "first", false, "last", "username", null)
-	val CHAT_ID = 23L
+	val CHAT_ID = 1L
 
 	fun buildMockUpdate(text: String?, chatType: ChatType): Update {
 		val message = mock(Message::class.java)
