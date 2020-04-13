@@ -1,5 +1,6 @@
 package wombatukun.bots.wombatubot.services
 
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
@@ -30,6 +31,6 @@ class MessageDispatcherTest: MockingUtils() {
 		val response: SendMessage? = messageDispatcher.dispatch(update)
 		assertEquals(MAN, response?.text)
 		assertEquals(CHAT_ID.toString(), response?.chatId)
-		verify(userService, times(1)).upsertUser(update.message.from)
+		runBlocking { verify(userService, times(1)).upsertUser(update.message.from) }
 	}
 }

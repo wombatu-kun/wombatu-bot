@@ -13,7 +13,7 @@ class UserServiceImpl(
 ): UserService {
 
 	@Transactional
-	override fun upsertUser(from: org.telegram.telegrambots.meta.api.objects.User) {
+	override suspend fun upsertUser(from: org.telegram.telegrambots.meta.api.objects.User) {
 		val id = from.id.toLong()
 		val user = userRepository.findById(id).orElse(User(id))
 		user.userName = from.userName
