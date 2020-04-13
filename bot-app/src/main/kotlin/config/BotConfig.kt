@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import org.telegram.telegrambots.ApiContextInitializer
 import javax.annotation.PostConstruct
 
 @Configuration
@@ -20,6 +21,7 @@ class BotConfig {
 
 	@PostConstruct
 	fun postConstruct() {
+		ApiContextInitializer.init()
 		log.info("BOT - {}, admin - {}", botUsername, botAdmin)
 	}
 }
