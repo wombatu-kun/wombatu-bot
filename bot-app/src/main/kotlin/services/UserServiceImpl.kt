@@ -24,4 +24,9 @@ class UserServiceImpl(
 		user.lastTime = LocalDateTime.now()
 		userRepository.save(user)
 	}
+
+	@Transactional(readOnly = true)
+	override fun listUsers(): List<User> {
+		return userRepository.findAll()
+	}
 }

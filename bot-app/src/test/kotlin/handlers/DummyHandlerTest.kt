@@ -27,7 +27,7 @@ class DummyHandlerTest: MockingUtils() {
 	@Test
 	fun testHandle() {
 		val response: SendMessage = dummyHandler.handle(buildMockUpdate("абырвалг", ChatType.private))
-		assertEquals("ты сказал: абырвалг", response.text)
+		assertEquals("so, you say: абырвалг", response.text)
 		assertEquals(CHAT_ID.toString(), response.chatId)
 	}
 }

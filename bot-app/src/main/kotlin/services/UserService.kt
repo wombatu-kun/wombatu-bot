@@ -1,9 +1,11 @@
 package wombatukun.bots.wombatubot.services
 
-import org.telegram.telegrambots.meta.api.objects.User
+import wombatukun.bots.wombatubot.dao.entities.User
+
 
 interface UserService {
 
-	fun upsertUser(from: User)
+	fun upsertUser(from: org.telegram.telegrambots.meta.api.objects.User)
+	fun listUsers(): List<User>
 
 }

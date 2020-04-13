@@ -36,6 +36,7 @@ logging:
 telegram:
   botUsername: ${TELEGRAM_BOTUSERNAME}
   botToken: ${TELEGRAM_BOTTOKEN}
+  botAdmin: ${TELEGRAM_BOTADMIN}
 
 apis:
   cbr:
