@@ -28,7 +28,7 @@ class AdminHandler(
 		when {
 			msg == "лист" -> {
 				val text = userService.listUsers().sortedByDescending { it.lastTime }
-						.map { "${it.id} | ${it.lastTime} | ${it.userName}" }.joinToString("\n")
+						.map { "${it.id} | ${it.lastTime} | @${it.userName}" }.joinToString("\n")
 				return listOf(buildSimpleResponse(update.message.chatId, text))
 			}
 			msg.matches(Regex("^мсг \\d{1,12} .+")) -> try {

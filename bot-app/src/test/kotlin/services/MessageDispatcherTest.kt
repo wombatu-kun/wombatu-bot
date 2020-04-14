@@ -37,7 +37,7 @@ class MessageDispatcherTest: MockingUtils() {
 		assertEquals(MAN, responses[0].text)
 		assertEquals(CHAT_ID.toString(), responses[0].chatId)
 
-		TimeUnit.MILLISECONDS.sleep(200);
+		TimeUnit.MILLISECONDS.sleep(200)
 
 		val users = userService.listUsers()
 		assertEquals(1, users.size)

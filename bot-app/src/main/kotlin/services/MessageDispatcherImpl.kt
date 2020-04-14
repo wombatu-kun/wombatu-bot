@@ -25,7 +25,7 @@ class MessageDispatcherImpl(
 			CapslockHandler(),
 			CountHandler(),
 			AdminHandler(botConfig.botAdmin?:"", userService),
-			DummyHandler()
+			TransmitterHandler(botConfig.botAdmin)
 	)
 
 	override fun dispatch(update: Update): List<SendMessage> {
@@ -37,6 +37,6 @@ class MessageDispatcherImpl(
 						handlers.map { it.man() }.filter { it.isNotBlank() }.joinToString("\n")))
 			}
 		}
-		return handlers.find { it.matches(update) }?.handle(update).orEmpty()
+		return handlers.filter { it.matches(update) }.map { it.handle(update) }.flatten()
 	}
 }

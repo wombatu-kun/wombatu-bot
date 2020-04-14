@@ -4,7 +4,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import wombatukun.bots.wombatubot.handlers.MessageHandler.Companion.buildSimpleResponse
 
-class DummyHandler: MessageHandler {
+class TransmitterHandler(
+		private val botAdmin: String
+): MessageHandler {
 
 	override fun man(): String {
 		return ""
@@ -15,13 +17,12 @@ class DummyHandler: MessageHandler {
 	}
 
 	override fun handle(update: Update): List<SendMessage> {
-		val sender = update.message.from
-		val msg: String = update.message.text
-		val text = when {
-			msg.startsWith("кто ты",true) -> "я есть вомбату-куна вомбату-бот!"
-			msg.startsWith("кто я", true) -> "ты есть то, что обозначается как @${sender.userName}"
-			else -> "so, you say: ${msg}"
+		val from = update.message.from
+		if (from.id.toString() != botAdmin) {
+			val text = "${from.id} (@${from.userName}): ${update.message.text}"
+			return listOf(buildSimpleResponse(botAdmin.toLong(), text))
+		} else {
+			return emptyList()
 		}
-		return listOf(buildSimpleResponse(update.message.chatId, text))
 	}
 }
