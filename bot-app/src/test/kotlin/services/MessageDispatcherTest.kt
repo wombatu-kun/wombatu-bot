@@ -1,20 +1,23 @@
 package wombatukun.bots.wombatubot.services
 
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.*
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.jdbc.Sql
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
-import wombatukun.api.currency.CurrencyApi
 import wombatukun.bots.wombatubot.MockingUtils
-import wombatukun.bots.wombatubot.config.BotConfig
+import java.util.concurrent.TimeUnit
 
+@SpringBootTest
 class MessageDispatcherTest: MockingUtils() {
 
-	private val botConfig = mock(BotConfig::class.java)
-	private val userService = mock(UserService::class.java)
-	private val messageDispatcher = MessageDispatcherImpl(botConfig, userService, mock(CurrencyApi::class.java))
+	@Autowired
+	private lateinit var userService: UserService
+
+	@Autowired
+	private lateinit var messageDispatcher: MessageDispatcher
 
 	private val MAN: String = """
 		Текущий курс: руб
@@ -26,11 +29,17 @@ class MessageDispatcherTest: MockingUtils() {
 		""".trimIndent()
 
 	@Test
+	@Sql(scripts = ["/sql/clean.sql"], executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 	fun testDispatchStart() {
+		assertEquals(0, userService.listUsers().size)
 		val update: Update = buildMockUpdate("/start", ChatType.private)
 		val response: SendMessage? = messageDispatcher.dispatch(update)
 		assertEquals(MAN, response?.text)
 		assertEquals(CHAT_ID.toString(), response?.chatId)
-		runBlocking { verify(userService, times(1)).upsertUser(update.message.from) }
+
+		TimeUnit.MILLISECONDS.sleep(500);
+
+		val users = userService.listUsers()
+		assertEquals(1, users.size)
 	}
 }

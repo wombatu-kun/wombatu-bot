@@ -12,7 +12,7 @@ import wombatukun.bots.wombatubot.services.UserService
 class AdminHandlerTest: MockingUtils() {
 
 	private val userService = Mockito.mock(UserService::class.java)
-	private val adminHandler = AdminHandler("1", userService)
+	private val adminHandler = AdminHandler("username", userService)
 
 	@Test
 	fun testMan() {

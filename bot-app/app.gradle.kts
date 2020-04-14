@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-	compile(project(":bot-dao"))
+	api(project(":bot-dao"))
 	implementation(project(":bot-currency-api"))
 	implementation("org.telegram:telegrambots-spring-boot-starter:4.7")
 	implementation("org.springframework.boot:spring-boot-starter-web")
