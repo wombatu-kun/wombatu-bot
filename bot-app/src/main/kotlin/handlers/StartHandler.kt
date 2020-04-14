@@ -4,9 +4,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import wombatukun.bots.wombatubot.handlers.MessageHandler.Companion.buildSimpleResponse
 
-class TransmitterHandler(
-		private val botAdmin: String,
-		private val transmitterOn: Boolean = true
+class StartHandler(
+		private val handlers: List<MessageHandler>
 ): MessageHandler {
 
 	override fun man(): String {
@@ -14,16 +13,12 @@ class TransmitterHandler(
 	}
 
 	override fun matches(update: Update): Boolean {
-		return transmitterOn && update.message.isUserMessage && update.message?.text != null
+		val text = update.message?.text
+		return update.message.isUserMessage &&  text != null && (text == "ман" || text == "/start")
 	}
 
 	override fun handle(update: Update): List<SendMessage> {
-		val from = update.message.from
-		if (from.id.toString() != botAdmin) {
-			val text = "${from.id} (@${from.userName}): ${update.message.text}"
-			return listOf(buildSimpleResponse(botAdmin.toLong(), text))
-		} else {
-			return emptyList()
-		}
+		return listOf(buildSimpleResponse(update.message.chatId,
+				handlers.map { it.man() }.filter { it.isNotBlank() }.joinToString("\n")))
 	}
 }

@@ -18,10 +18,11 @@ class BotConfig {
 	lateinit var botUsername: String
 	lateinit var botToken: String
 	lateinit var botAdmin: String
+	lateinit var transmitterOn: String
 
 	@PostConstruct
 	fun postConstruct() {
 		ApiContextInitializer.init()
-		log.info("BOT - {}, admin - {}", botUsername, botAdmin)
+		log.info("BOT - {}, admin - {}, transmitterOn - {}", botUsername, botAdmin, transmitterOn)
 	}
 }

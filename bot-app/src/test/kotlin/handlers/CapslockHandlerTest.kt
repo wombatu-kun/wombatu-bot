@@ -14,17 +14,17 @@ class CapslockHandlerTest: MockingUtils() {
 	}
 
 	@Test
-	fun testGroupMessageNotMatch() {
+	fun testGroupMessageNotMatches() {
 		assertFalse(capslockHandler.matches(buildMockUpdate("text", ChatType.group)))
 	}
 
 	@Test
-	fun testMessageTextNotMatch() {
+	fun testMessageTextNotMatches() {
 		assertFalse(capslockHandler.matches(buildMockUpdate("анкап", ChatType.private)))
 	}
 
 	@Test
-	fun testMessageTextMatch() {
+	fun testMessageTextMatches() {
 		assertTrue(capslockHandler.matches(buildMockUpdate("анкапс абЫрВАЛГ", ChatType.private)))
 	}
 

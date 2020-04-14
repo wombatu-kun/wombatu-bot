@@ -22,12 +22,12 @@ class CurrencyHandlerTest: MockingUtils() {
 	}
 
 	@Test
-	fun testChannelMessageNotMatch() {
+	fun testChannelMessageNotMatches() {
 		assertFalse(currencyHandler.matches(buildMockUpdate("руб", ChatType.channel)))
 	}
 
 	@Test
-	fun testMessageTextMatch() {
+	fun testMessageTextMatches() {
 		assertTrue(currencyHandler.matches(buildMockUpdate("руб", ChatType.private)))
 	}
 

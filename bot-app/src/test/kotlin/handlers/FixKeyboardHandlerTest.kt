@@ -17,22 +17,22 @@ class FixKeyboardHandlerTest: MockingUtils() {
 	}
 
 	@Test
-	fun testGroupMessageNotMatch() {
+	fun testGroupMessageNotMatches() {
 		assertFalse(fixKeyboardHandler.matches(buildMockUpdate("рус лалала", ChatType.group)))
 	}
 
 	@Test
-	fun testMessageTextNotMatch() {
+	fun testMessageTextNotMatches() {
 		assertFalse(fixKeyboardHandler.matches(buildMockUpdate("шмус", ChatType.private)))
 	}
 
 	@Test
-	fun testRusMatch() {
+	fun testRusMatches() {
 		assertTrue(fixKeyboardHandler.matches(buildMockUpdate("рус asdf", ChatType.private)))
 	}
 
 	@Test
-	fun testEngMatch() {
+	fun testEngMatches() {
 		assertTrue(fixKeyboardHandler.matches(buildMockUpdate("енг йцук", ChatType.private)))
 	}
 

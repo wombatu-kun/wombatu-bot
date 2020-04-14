@@ -14,17 +14,17 @@ class CountHandlerTest: MockingUtils() {
 	}
 
 	@Test
-	fun testSuperGroupMessageNotMatch() {
+	fun testSuperGroupMessageNotMatches() {
 		assertFalse(countHandler.matches(buildMockUpdate("text", ChatType.supergroup)))
 	}
 
 	@Test
-	fun testMessageTextNotMatch() {
+	fun testMessageTextNotMatches() {
 		assertFalse(countHandler.matches(buildMockUpdate("каунт", ChatType.private)))
 	}
 
 	@Test
-	fun testMessageTextMatch() {
+	fun testMessageTextMatches() {
 		assertTrue(countHandler.matches(buildMockUpdate("каунт абырвалг", ChatType.private)))
 	}
 

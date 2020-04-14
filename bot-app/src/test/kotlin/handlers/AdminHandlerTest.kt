@@ -19,22 +19,22 @@ class AdminHandlerTest: MockingUtils() {
 	}
 
 	@Test
-	fun testChannelMessageNotMatch() {
+	fun testChannelMessageNotMatches() {
 		assertFalse(adminHandler.matches(buildMockUpdate("text", ChatType.channel)))
 	}
 
 	@Test
-	fun testMessageTextNotMatch() {
+	fun testMessageTextNotMatches() {
 		assertFalse(adminHandler.matches(buildMockUpdate("реверс", ChatType.private)))
 	}
 
 	@Test
-	fun testListMatch() {
+	fun testListMatches() {
 		assertTrue(adminHandler.matches(buildMockUpdate("лист", ChatType.private)))
 	}
 
 	@Test
-	fun testMsgMatch() {
+	fun testMsgMatches() {
 		assertTrue(adminHandler.matches(buildMockUpdate("мсг 1 ололо", ChatType.private)))
 	}
 

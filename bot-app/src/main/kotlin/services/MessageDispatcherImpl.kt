@@ -24,17 +24,17 @@ class MessageDispatcherImpl(
 			FixKeyboardHandler(),
 			CapslockHandler(),
 			CountHandler(),
-			AdminHandler(botConfig.botAdmin?:"", userService),
-			TransmitterHandler(botConfig.botAdmin)
+			AdminHandler(botConfig.botAdmin, userService),
+			TransmitterHandler(botConfig.botAdmin, botConfig.transmitterOn.toBoolean())
 	)
+	private val startHandler = StartHandler(handlers)
 
 	override fun dispatch(update: Update): List<SendMessage> {
 		val message: Message? = update.message
 		if (message?.isUserMessage == true) {
 			GlobalScope.launch { userService.upsertUser(update.message.from) }
-			if (message.text == "ман" || message.text == "/start") {
-				return listOf(MessageHandler.buildSimpleResponse(message.chatId,
-						handlers.map { it.man() }.filter { it.isNotBlank() }.joinToString("\n")))
+			if (startHandler.matches(update)) {
+				return startHandler.handle(update)
 			}
 		}
 		return handlers.filter { it.matches(update) }.map { it.handle(update) }.flatten()
