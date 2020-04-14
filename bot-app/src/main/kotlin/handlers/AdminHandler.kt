@@ -20,7 +20,7 @@ class AdminHandler(
 		return update.message.isUserMessage
 				&& msg != null
 				&& msg.matches(Regex("(^лист)|(^мсг \\d{1,12} .+)"))
-				&& update.message.from.userName == botAdmin
+				&& update.message.from.id == botAdmin.toInt()
 	}
 
 	override fun handle(update: Update): SendMessage {
