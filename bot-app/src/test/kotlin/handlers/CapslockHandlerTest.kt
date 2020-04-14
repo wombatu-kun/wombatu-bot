@@ -2,7 +2,6 @@ package wombatukun.bots.wombatubot.handlers
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import wombatukun.bots.wombatubot.MockingUtils
 
 class CapslockHandlerTest: MockingUtils() {
@@ -31,8 +30,9 @@ class CapslockHandlerTest: MockingUtils() {
 
 	@Test
 	fun testHandle() {
-		val response: SendMessage = capslockHandler.handle(buildMockUpdate("анкапс абЫрВАЛГ", ChatType.private))
-		assertEquals("АБыРвалг", response.text)
-		assertEquals(CHAT_ID.toString(), response.chatId)
+		val responses = capslockHandler.handle(buildMockUpdate("анкапс абЫрВАЛГ", ChatType.private))
+		assertEquals(1, responses.size)
+		assertEquals("АБыРвалг", responses[0].text)
+		assertEquals(CHAT_ID.toString(), responses[0].chatId)
 	}
 }

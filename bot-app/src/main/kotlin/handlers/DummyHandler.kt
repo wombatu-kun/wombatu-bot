@@ -14,7 +14,7 @@ class DummyHandler: MessageHandler {
 		return update.message.isUserMessage && update.message?.text != null
 	}
 
-	override fun handle(update: Update): SendMessage {
+	override fun handle(update: Update): List<SendMessage> {
 		val sender = update.message.from
 		val msg: String = update.message.text
 		val text = when {
@@ -22,6 +22,6 @@ class DummyHandler: MessageHandler {
 			msg.startsWith("кто я", true) -> "ты есть то, что обозначается как @${sender.userName}"
 			else -> "so, you say: ${msg}"
 		}
-		return buildSimpleResponse(update.message.chatId, text)
+		return listOf(buildSimpleResponse(update.message.chatId, text))
 	}
 }

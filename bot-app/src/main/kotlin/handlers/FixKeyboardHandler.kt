@@ -21,7 +21,7 @@ class FixKeyboardHandler: MessageHandler {
 		return update.message.isUserMessage && msg != null && msg.matches(Regex("(^рус .+)|(^енг .+)"))
 	}
 
-	override fun handle(update: Update): SendMessage {
+	override fun handle(update: Update): List<SendMessage> {
 		val msg = update.message.text
 		val text = when {
 			msg.startsWith("рус ") ->
@@ -30,7 +30,7 @@ class FixKeyboardHandler: MessageHandler {
 				msg.substringAfter(' ').map { exchangeSymbol(it, rus, eng) }.joinToString("")
 			else -> man()
 		}
-		return buildSimpleResponse(update.message.chatId, text)
+		return listOf(buildSimpleResponse(update.message.chatId, text))
 	}
 
 	private fun exchangeSymbol(c: Char, layoutFrom: String, layoutTo: String): Char {

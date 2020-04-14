@@ -26,10 +26,9 @@ class WombatuBot(
 			return
 		}
 		log.info("received: {}", update)
-		val msg: SendMessage? = messageDispatcher.dispatch(update)
-		if (msg != null) {
-			msg.setText(escapeSpecialSymbols(msg.text))
-			sendResponse(msg)
+		messageDispatcher.dispatch(update).forEach {
+			it.text = escapeSpecialSymbols(it.text)
+			sendResponse(it)
 		}
 	}
 

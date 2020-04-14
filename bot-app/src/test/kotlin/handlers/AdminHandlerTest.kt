@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import wombatukun.bots.wombatubot.MockingUtils
 import wombatukun.bots.wombatubot.dao.entities.User
 import wombatukun.bots.wombatubot.services.UserService
@@ -41,16 +40,17 @@ class AdminHandlerTest: MockingUtils() {
 
 	@Test
 	fun testListHandle() {
-		val response: SendMessage = adminHandler.handle(buildMockUpdate("лист", ChatType.private))
-		assertEquals("", response.text)
-		assertEquals(CHAT_ID.toString(), response.chatId)
+		val responses = adminHandler.handle(buildMockUpdate("лист", ChatType.private))
+		assertEquals("", responses[0].text)
+		assertEquals(CHAT_ID.toString(), responses[0].chatId)
 	}
 
 	@Test
 	fun testMsgHandleSuccess() {
 		`when`(userService.findById(1)).thenReturn(User(1))
-		val response: SendMessage = adminHandler.handle(buildMockUpdate("мсг 1 ололо", ChatType.private))
-		assertEquals("ололо", response.text)
-		assertEquals("1", response.chatId)
+		val responses = adminHandler.handle(buildMockUpdate("мсг 1 ололо", ChatType.private))
+		assertEquals(1, responses.size)
+		assertEquals("ололо", responses[0].text)
+		assertEquals("1", responses[0].chatId)
 	}
 }

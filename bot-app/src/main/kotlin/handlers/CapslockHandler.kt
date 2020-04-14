@@ -15,11 +15,11 @@ class CapslockHandler: MessageHandler {
 		return update.message.isUserMessage && msg != null && msg.matches(Regex("^анкапс .+"))
 	}
 
-	override fun handle(update: Update): SendMessage {
+	override fun handle(update: Update): List<SendMessage> {
 		val text = update.message.text
 				.substringAfter(' ')
 				.map { if (it.isUpperCase()) it.toLowerCase() else it.toUpperCase() }
 				.joinToString("")
-		return buildSimpleResponse(update.message.chatId, text)
+		return listOf(buildSimpleResponse(update.message.chatId, text))
 	}
 }

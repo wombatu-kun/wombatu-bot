@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.jdbc.Sql
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import wombatukun.bots.wombatubot.MockingUtils
 import java.util.concurrent.TimeUnit
@@ -33,9 +32,10 @@ class MessageDispatcherTest: MockingUtils() {
 	fun testDispatchStart() {
 		assertEquals(0, userService.listUsers().size)
 		val update: Update = buildMockUpdate("/start", ChatType.private)
-		val response: SendMessage? = messageDispatcher.dispatch(update)
-		assertEquals(MAN, response?.text)
-		assertEquals(CHAT_ID.toString(), response?.chatId)
+		val responses = messageDispatcher.dispatch(update)
+		assertEquals(1, responses.size)
+		assertEquals(MAN, responses[0].text)
+		assertEquals(CHAT_ID.toString(), responses[0].chatId)
 
 		TimeUnit.MILLISECONDS.sleep(200);
 

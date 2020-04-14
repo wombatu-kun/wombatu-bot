@@ -28,15 +28,15 @@ class MessageDispatcherImpl(
 			DummyHandler()
 	)
 
-	override fun dispatch(update: Update): SendMessage? {
+	override fun dispatch(update: Update): List<SendMessage> {
 		val message: Message? = update.message
 		if (message?.isUserMessage == true) {
 			GlobalScope.launch { userService.upsertUser(update.message.from) }
 			if (message.text == "ман" || message.text == "/start") {
-				return MessageHandler.buildSimpleResponse(message.chatId,
-						handlers.map { it.man() }.filter { it.isNotBlank() }.joinToString("\n"))
+				return listOf(MessageHandler.buildSimpleResponse(message.chatId,
+						handlers.map { it.man() }.filter { it.isNotBlank() }.joinToString("\n")))
 			}
 		}
-		return handlers.find { it.matches(update) }?.handle(update)
+		return handlers.find { it.matches(update) }?.handle(update).orEmpty()
 	}
 }

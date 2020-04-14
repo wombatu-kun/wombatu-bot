@@ -25,7 +25,7 @@ class CurrencyHandler(
 		return update.message.isUserMessage && msg != null && (msg == "руб" || msg.startsWith("руб "))
 	}
 
-	override fun handle(update: Update): SendMessage {
+	override fun handle(update: Update): List<SendMessage> {
 		val msg: String = update.message.text
 		val text = when {
 			msg == "руб" -> buildCurrencyText(currencyApi.getExchangeRates(CurrencyRequest()))
@@ -37,7 +37,7 @@ class CurrencyHandler(
 			}
 			else -> man()
 		}
-		return buildSimpleResponse(update.message.chatId, text)
+		return listOf(buildSimpleResponse(update.message.chatId, text))
 	}
 
 	private fun buildCurrencyText(response: CurrencyResponse): String {

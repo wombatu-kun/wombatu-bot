@@ -8,7 +8,7 @@ interface MessageHandler {
 
 	fun man(): String //user manual
 	fun matches(update: Update): Boolean //trigger
-	fun handle(update: Update): SendMessage //action and response
+	fun handle(update: Update): List<SendMessage> //action and list of responses
 
 	companion object {
 		val formatter : DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")

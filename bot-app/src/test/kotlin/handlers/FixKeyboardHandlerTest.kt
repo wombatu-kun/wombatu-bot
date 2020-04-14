@@ -2,7 +2,6 @@ package wombatukun.bots.wombatubot.handlers
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import wombatukun.bots.wombatubot.MockingUtils
 
 class FixKeyboardHandlerTest: MockingUtils() {
@@ -39,15 +38,17 @@ class FixKeyboardHandlerTest: MockingUtils() {
 
 	@Test
 	fun testEngHandle() {
-		val response: SendMessage = fixKeyboardHandler.handle(buildMockUpdate("енг $textIn", ChatType.private))
-		assertEquals(textOu, response.text)
-		assertEquals(CHAT_ID.toString(), response.chatId)
+		val responses = fixKeyboardHandler.handle(buildMockUpdate("енг $textIn", ChatType.private))
+		assertEquals(1, responses.size)
+		assertEquals(textOu, responses[0].text)
+		assertEquals(CHAT_ID.toString(), responses[0].chatId)
 	}
 
 	@Test
 	fun testRusHandle() {
-		val response: SendMessage = fixKeyboardHandler.handle(buildMockUpdate("рус $textOu", ChatType.private))
-		assertEquals(textIn, response.text)
-		assertEquals(CHAT_ID.toString(), response.chatId)
+		val responses = fixKeyboardHandler.handle(buildMockUpdate("рус $textOu", ChatType.private))
+		assertEquals(1, responses.size)
+		assertEquals(textIn, responses[0].text)
+		assertEquals(CHAT_ID.toString(), responses[0].chatId)
 	}
 }

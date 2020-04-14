@@ -5,6 +5,6 @@ import org.telegram.telegrambots.meta.api.objects.Update
 
 interface MessageDispatcher {
 
-	fun dispatch(update: Update): SendMessage?
+	fun dispatch(update: Update): List<SendMessage>
 
 }

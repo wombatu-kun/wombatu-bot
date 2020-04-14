@@ -2,7 +2,6 @@ package wombatukun.bots.wombatubot.handlers
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import wombatukun.bots.wombatubot.MockingUtils
 
 class DummyHandlerTest: MockingUtils() {
@@ -26,8 +25,9 @@ class DummyHandlerTest: MockingUtils() {
 
 	@Test
 	fun testHandle() {
-		val response: SendMessage = dummyHandler.handle(buildMockUpdate("абырвалг", ChatType.private))
-		assertEquals("so, you say: абырвалг", response.text)
-		assertEquals(CHAT_ID.toString(), response.chatId)
+		val responses = dummyHandler.handle(buildMockUpdate("абырвалг", ChatType.private))
+		assertEquals(1, responses.size)
+		assertEquals("so, you say: абырвалг", responses[0].text)
+		assertEquals(CHAT_ID.toString(), responses[0].chatId)
 	}
 }

@@ -23,21 +23,21 @@ class AdminHandler(
 				&& update.message.from.id == botAdmin.toInt()
 	}
 
-	override fun handle(update: Update): SendMessage {
+	override fun handle(update: Update): List<SendMessage> {
 		val msg: String = update.message.text
 		when {
 			msg == "лист" -> {
 				val text = userService.listUsers().sortedByDescending { it.lastTime }
 						.map { "${it.id} | ${it.lastTime} | ${it.userName}" }.joinToString("\n")
-				return buildSimpleResponse(update.message.chatId, text)
+				return listOf(buildSimpleResponse(update.message.chatId, text))
 			}
 			msg.matches(Regex("^мсг \\d{1,12} .+")) -> try {
 				val userId = msg.split(" ")[1].toLong()
 				val text = msg.substringAfter(userId.toString()).trim()
 				val user: User = userService.findById(userId)
-				return buildSimpleResponse(user.id!!, text)
+				return listOf(buildSimpleResponse(user.id!!, text))
 			} catch (e: Exception) {}
 		}
-		return buildSimpleResponse(update.message.chatId, "херню написал!")
+		return listOf(buildSimpleResponse(update.message.chatId, "херню написал!"))
 	}
 }

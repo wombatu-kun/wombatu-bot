@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import wombatukun.api.currency.CurrencyApi
 import wombatukun.api.currency.CurrencyRequest
 import wombatukun.api.currency.CurrencyResponse
@@ -36,33 +35,35 @@ class CurrencyHandlerTest: MockingUtils() {
 	fun testHandleWithoutDate() {
 		`when`(currencyApi.getExchangeRates(CurrencyRequest())).thenReturn(
 				CurrencyResponse(LocalDate.now(), listOf(ExchangeRate("USD", 1, 80.0), ExchangeRate("EUR", 1, 90.0))))
-		val response: SendMessage = currencyHandler.handle(buildMockUpdate("руб", ChatType.private))
-		assertEquals("${LocalDate.now().format(MessageHandler.formatter)}: $ = 80.0₽, € = 90.0₽", response.text)
-		assertEquals(CHAT_ID.toString(), response.chatId)
+		val responses = currencyHandler.handle(buildMockUpdate("руб", ChatType.private))
+		assertEquals(1, responses.size)
+		assertEquals("${LocalDate.now().format(MessageHandler.formatter)}: $ = 80.0₽, € = 90.0₽", responses[0].text)
+		assertEquals(CHAT_ID.toString(), responses[0].chatId)
 	}
 
 	@Test
 	fun testHandleWithDate() {
 		`when`(currencyApi.getExchangeRates(CurrencyRequest(LocalDate.parse("2020-04-01")))).thenReturn(
 				CurrencyResponse(LocalDate.parse("2020-04-01"), listOf(ExchangeRate("USD", 1, 80.0), ExchangeRate("EUR", 1, 90.0))))
-		val response: SendMessage = currencyHandler.handle(buildMockUpdate("руб 01.04.2020", ChatType.private))
-		assertEquals("01.04.2020: $ = 80.0₽, € = 90.0₽", response.text)
-		assertEquals(CHAT_ID.toString(), response.chatId)
+		val responses = currencyHandler.handle(buildMockUpdate("руб 01.04.2020", ChatType.private))
+		assertEquals(1, responses.size)
+		assertEquals("01.04.2020: $ = 80.0₽, € = 90.0₽", responses[0].text)
+		assertEquals(CHAT_ID.toString(), responses[0].chatId)
 	}
 
 	@Test
 	fun testHandleWithNonDate() {
-		val response: SendMessage = currencyHandler.handle(buildMockUpdate("руб 31.13.2020", ChatType.private))
-		assertEquals("Текущий курс: руб\nКурс на дату: руб ДД.ММ.ГГГГ", response.text)
-		assertEquals(CHAT_ID.toString(), response.chatId)
+		val responses = currencyHandler.handle(buildMockUpdate("руб 31.13.2020", ChatType.private))
+		assertEquals("Текущий курс: руб\nКурс на дату: руб ДД.ММ.ГГГГ", responses[0].text)
+		assertEquals(CHAT_ID.toString(), responses[0].chatId)
 	}
 
 	@Test
 	fun testHandleEmptyResponse() {
 		`when`(currencyApi.getExchangeRates(CurrencyRequest(LocalDate.parse("2020-04-26")))).thenReturn(
 				CurrencyResponse(LocalDate.parse("2020-04-26"), emptyList()))
-		val response: SendMessage = currencyHandler.handle(buildMockUpdate("руб 26.04.2020", ChatType.private))
-		assertEquals("26.04.2020: не удалось получить курсы валют", response.text)
-		assertEquals(CHAT_ID.toString(), response.chatId)
+		val responses = currencyHandler.handle(buildMockUpdate("руб 26.04.2020", ChatType.private))
+		assertEquals("26.04.2020: не удалось получить курсы валют", responses[0].text)
+		assertEquals(CHAT_ID.toString(), responses[0].chatId)
 	}
 }

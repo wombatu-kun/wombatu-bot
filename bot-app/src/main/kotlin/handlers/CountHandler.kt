@@ -15,8 +15,8 @@ class CountHandler: MessageHandler {
 		return update.message.isUserMessage && msg != null && msg.matches(Regex("^каунт .+"))
 	}
 
-	override fun handle(update: Update): SendMessage {
-		return buildSimpleResponse(update.message.chatId,
-				update.message.text.substringAfter(' ').length.toString())
+	override fun handle(update: Update): List<SendMessage> {
+		return listOf(buildSimpleResponse(update.message.chatId,
+				update.message.text.substringAfter(' ').length.toString()))
 	}
 }
