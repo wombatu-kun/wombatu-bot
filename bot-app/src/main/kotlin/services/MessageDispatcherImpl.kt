@@ -5,7 +5,6 @@ import kotlinx.coroutines.launch
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
-import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.Update
 import wombatukun.api.currency.CurrencyApi
 import wombatukun.bots.wombatubot.config.BotConfig
@@ -30,8 +29,7 @@ class MessageDispatcherImpl(
 	private val startHandler = StartHandler(handlers)
 
 	override fun dispatch(update: Update): List<SendMessage> {
-		val message: Message? = update.message
-		if (message?.isUserMessage == true) {
+		if (update.message?.isUserMessage == true) {
 			GlobalScope.launch { userService.upsertUser(update.message.from) }
 			if (startHandler.matches(update)) {
 				return startHandler.handle(update)

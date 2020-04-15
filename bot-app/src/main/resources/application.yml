@@ -12,8 +12,8 @@ spring:
 
   datasource:
     url: 'jdbc:postgresql://localhost:5432/wombatubot'
-    username: postgres
-    password: password
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
     hikari:
       connectionTimeout: 20000
       maximum-pool-size: 60

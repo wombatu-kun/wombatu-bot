@@ -2,14 +2,16 @@ package wombatukun.bots.wombatubot.handlers
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
-import wombatukun.bots.wombatubot.dao.entities.User
 import wombatukun.bots.wombatubot.handlers.MessageHandler.Companion.buildSimpleResponse
 import wombatukun.bots.wombatubot.services.UserService
+import java.time.format.DateTimeFormatter
 
 class AdminHandler(
 		private val botAdmin: String,
 		private val userService: UserService
 ): MessageHandler {
+
+	private val dtFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
 	override fun man(): String {
 		return ""
@@ -28,14 +30,14 @@ class AdminHandler(
 		when {
 			msg == "лист" -> {
 				val text = userService.listUsers().sortedByDescending { it.lastTime }
-						.map { "${it.id} | ${it.lastTime} | @${it.userName}" }.joinToString("\n")
+						.map { "${it.id} | ${it.lastTime.format(dtFormat)} | @${it.userName}" }
+						.joinToString("\n")
 				return listOf(buildSimpleResponse(update.message.chatId, text))
 			}
 			msg.matches(Regex("^мсг \\d{1,12} .+")) -> try {
 				val userId = msg.split(" ")[1].toLong()
-				val text = msg.substringAfter(userId.toString()).trim()
-				val user: User = userService.findById(userId)
-				return listOf(buildSimpleResponse(user.id!!, text))
+				val user = userService.findById(userId)
+				return listOf(buildSimpleResponse(user.id!!, msg.substringAfter(userId.toString()).trim()))
 			} catch (e: Exception) {}
 		}
 		return listOf(buildSimpleResponse(update.message.chatId, "херню написал!"))
