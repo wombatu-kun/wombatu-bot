@@ -25,4 +25,8 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2020-07-30-09:36-nullable_username" author="wombatu-kun">
+        <dropNotNullConstraint tableName="users" columnName="user_name" columnDataType="varchar(200)"/>
+    </changeSet>
+
 </databaseChangeLog>

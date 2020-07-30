@@ -20,7 +20,7 @@ data class User (
 		@Column(name = "last_time")
 		var lastTime: LocalDateTime = LocalDateTime.now(),
 
-		var userName: String = "",
+		var userName: String? = null,
 		var firstName: String? = null,
 		var lastName: String? = null,
 

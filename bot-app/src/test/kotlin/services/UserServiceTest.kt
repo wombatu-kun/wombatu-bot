@@ -40,7 +40,7 @@ class UserServiceTest: MockingUtils() {
 		val firstTime = user.firstTime
 		val lastTime = user.lastTime
 
-		val updUser = org.telegram.telegrambots.meta.api.objects.User(1, "Васёк", false, "Пупкен", "PUPKEN", "ru")
+		val updUser = org.telegram.telegrambots.meta.api.objects.User(1, "Васёк", false, "Пупкен", null, "ru")
 		runBlocking { userService.upsertUser(updUser) }
 		users = userService.listUsers()
 		assertEquals(1, users.size)
